@@ -1,0 +1,75 @@
+name: Generate Doxygen Documentation
+
+on:
+  workflow_run:
+    workflows: ["Build"]   # 👈 Name of the workflow in build.yml (must match `name:`)
+    types:
+      - completed
+
+jobs:
+  generate-docs:
+    name: Generate and Deploy Doxygen/Mkdocs Documentation
+    if: >
+      ${{ github.event.workflow_run.conclusion == 'success' &&
+          startsWith(github.ref, 'refs/tags/v') &&
+          !contains(github.ref, '-') }} # Only stable tags
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: [ "3.11" ]
+
+    steps:
+      # Step 1: Check out the repository
+      - name: Check out the repository
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive
+
+      # Step 2: Set up Python
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v3
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      # Step 3: Set up Doxygen
+      - name: Install Doxygen
+        run: |
+          export DOXY_VERSION=1.14.0
+          echo "Installing doxgen v$DOXY_VERSION"
+          sudo apt-get update && sudo apt-get install -y graphviz
+          mkdir doxygen-installer
+          wget "https://www.doxygen.nl/files/doxygen-${DOXY_VERSION}.linux.bin.tar.gz"
+          mv "doxygen-${DOXY_VERSION}.linux.bin.tar.gz" doxygen-installer
+          cd doxygen-installer
+          gunzip "doxygen-${DOXY_VERSION}.linux.bin.tar.gz"
+          tar xf "doxygen-${DOXY_VERSION}.linux.bin.tar"
+          cd "doxygen-${DOXY_VERSION}"
+          ls -laht
+          sudo make install
+
+      # Step 4: Generate Documentation
+      - name: Generate Doxygen Documentation
+        run: doxygen Doxyfile
+
+      # Step 5: Install MkDocs
+      - name: Install MkDocs
+        run: |
+          python -m pip install --upgrade pip
+          pip install mkdocs
+          pip install mkdocs-material
+          pip install pydoclint
+          pip install mkdocstrings[python]
+
+      # Step 6: Build MkDocs Documentation
+      - name: Build MkDocs Documentation
+        run: |
+          mkdocs build
+
+      # Step 7: Deploy to GitHub Pages
+      - name: Deploy to GitHub Pages
+        if: "!contains(github.ref, '-')" # Skip pre-release tags
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: site/
