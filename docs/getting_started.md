@@ -3,7 +3,7 @@
 
 ## Installing BitBully Databases
 
-Install BitBully via pip:
+Install `bitbully-databases` via pip:
 
 
 === "Latest"

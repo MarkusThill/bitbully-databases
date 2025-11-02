@@ -3,8 +3,7 @@
 Homepage: https://github.com/MarkusThill/bitbully-databases
 """
 
-# from .bitbully import BitBully
-# from .board import Board
+from .bitbully_databases import BitBullyDatabases
 
-# __all__: list[str] = ["BitBully", "Board"]
+__all__: list[str] = ["BitBullyDatabases"]
 __version__: str = "0.0.1-a6"

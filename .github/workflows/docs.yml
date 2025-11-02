@@ -1,14 +1,14 @@
-name: Generate Doxygen Documentation
+name: Generate Documentation
 
 on:
   workflow_run:
-    workflows: ["Build"]   # 👈 Name of the workflow in build.yml (must match `name:`)
+    workflows: ["Build"]
     types:
       - completed
 
 jobs:
   generate-docs:
-    name: Generate and Deploy Doxygen/Mkdocs Documentation
+    name: Generate and Deploy Mkdocs Documentation
     if: >
       ${{ github.event.workflow_run.conclusion == 'success' &&
           startsWith(github.ref, 'refs/tags/v') &&
@@ -31,26 +31,6 @@ jobs:
         uses: actions/setup-python@v3
         with:
           python-version: ${{ matrix.python-version }}
-
-      # Step 3: Set up Doxygen
-      - name: Install Doxygen
-        run: |
-          export DOXY_VERSION=1.14.0
-          echo "Installing doxgen v$DOXY_VERSION"
-          sudo apt-get update && sudo apt-get install -y graphviz
-          mkdir doxygen-installer
-          wget "https://www.doxygen.nl/files/doxygen-${DOXY_VERSION}.linux.bin.tar.gz"
-          mv "doxygen-${DOXY_VERSION}.linux.bin.tar.gz" doxygen-installer
-          cd doxygen-installer
-          gunzip "doxygen-${DOXY_VERSION}.linux.bin.tar.gz"
-          tar xf "doxygen-${DOXY_VERSION}.linux.bin.tar"
-          cd "doxygen-${DOXY_VERSION}"
-          ls -laht
-          sudo make install
-
-      # Step 4: Generate Documentation
-      - name: Generate Doxygen Documentation
-        run: doxygen Doxyfile
 
       # Step 5: Install MkDocs
       - name: Install MkDocs

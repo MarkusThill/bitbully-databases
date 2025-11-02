@@ -30,6 +30,10 @@ plugins:
 - search
 - mkdocstrings
 
+# Note that there were/are issues with click:
+# https://github.com/mkdocs/mkdocs/issues/4032
+# Be careful when updating click
 watch:
 - src/bitbully_databases/
 - docs/
+- mkdocs.yml

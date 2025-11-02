@@ -47,10 +47,11 @@ dev = [
     "pyrefly"
 ]
 
-gui = [
+notebooks = [
     "matplotlib",
     "ipywidgets",
-    "ipympl"
+    "ipympl",
+    "numpy"
 ]
 
 ci = [
