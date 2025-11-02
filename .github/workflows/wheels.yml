@@ -103,7 +103,7 @@ jobs:
 
       # Run your tests from the repo against the installed package
       - name: Run tests
-        run: pytest -q
+        run: pytest -vv
         shell: bash
 
   # https://cibuildwheel.pypa.io/en/stable/deliver-to-pypi/
