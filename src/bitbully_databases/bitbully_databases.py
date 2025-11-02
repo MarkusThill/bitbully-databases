@@ -286,7 +286,7 @@ class BitBullyDatabases:
 
         bits: list[str] = ["0b"]
         for c in range(cols):  # e.g., 0..6 for 7 columns
-            for r in range(rows):  # e.g., 0..5 for 6 rows
+            for r in reversed(range(rows)):  # e.g., 0..5 for 6 rows
                 v = board[r][c]
                 if v == 0:
                     bits.append("0")  # separator for end-of-column
@@ -295,7 +295,7 @@ class BitBullyDatabases:
                     bits.append("10")  # P1 token (2 bits)
                 else:
                     bits.append("11")  # P2 token (2 bits)
-                if r == rows - 1:
+                if r == 0:
                     bits.append("0")  # column full → still add separator
 
         bits.append("0")  # pad to full byte as original logic does
