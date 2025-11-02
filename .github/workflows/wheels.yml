@@ -10,7 +10,7 @@ jobs:
   build_wheels:
     name: Build wheels on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 40 # Consider increasing timeout
+    timeout-minutes: 10 # Consider increasing timeout
     strategy:
       fail-fast: false
       matrix:
@@ -67,8 +67,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ ubuntu-latest, windows-latest, macos-latest ]
-        python-version: [ "3.10", "3.11", "3.12", "3.13" ]
+        os: [ ubuntu-latest ] # , windows-latest, macos-latest
+        python-version: [ "3.10" ] # , "3.11", "3.12", "3.13"
 
     steps:
       - uses: actions/checkout@v4
@@ -80,7 +80,7 @@ jobs:
       # Pull only the wheel artifacts (adjust pattern to your artifact name)
       - uses: actions/download-artifact@v4
         with:
-          pattern: wheels-*          # if your wheel artifacts are named differently, change this
+          #pattern: wheels-*
           path: dist
           merge-multiple: true
 
