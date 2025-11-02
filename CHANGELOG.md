@@ -1,3 +1,9 @@
+## v0.0.1-a6 (2025-11-02)
+
+### Fix
+
+- test on more python versions
+
 ## v0.0.1-a5 (2025-11-02)
 
 ### Fix

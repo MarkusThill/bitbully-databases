@@ -7,4 +7,4 @@ Homepage: https://github.com/MarkusThill/bitbully-databases
 # from .board import Board
 
 # __all__: list[str] = ["BitBully", "Board"]
-__version__: str = "0.0.1-a5"
+__version__: str = "0.0.1-a6"
