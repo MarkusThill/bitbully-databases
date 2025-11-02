@@ -1,3 +1,9 @@
+## v0.0.1-a7 (2025-11-02)
+
+### Fix
+
+- added a python class to access the databases
+
 ## v0.0.1-a6 (2025-11-02)
 
 ### Fix
