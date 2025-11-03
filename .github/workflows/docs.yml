@@ -45,6 +45,7 @@ jobs:
       - name: Build MkDocs Documentation
         run: |
           mkdocs build
+          ls -lah site/
 
       # Step 7: Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
