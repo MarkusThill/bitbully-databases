@@ -12,7 +12,6 @@ from importlib.resources import as_file, files
 from pathlib import Path
 from typing import BinaryIO, Literal
 
-Board = list[list[int]]
 """Board matrix type.
 
 Each entry is an integer:
@@ -20,6 +19,7 @@ Each entry is an integer:
 - 1: player 1 token
 - any other non-zero: player 2 token
 """
+Board = list[list[int]]
 
 
 class BitBullyDatabases:
@@ -42,6 +42,52 @@ class BitBullyDatabases:
     same functionality in optimized C++ and exposes it to Python via **pybind11**.
     The C++ implementation is substantially faster and more memory-efficient than
     the pure-Python examples shown here.
+
+    Example:
+        Get the score for a known position with exactly 12 tokens in the 12-ply-dist database.
+        Player 1 (yellow, X) can win in 29 moves.
+        ```python
+        import bitbully_databases as bbd
+
+        openingbook = bbd.BitBullyDatabases(db_name="12-ply-dist")
+
+        # Example position: a known position in the 12-ply and 12-ply-dist opening books
+        # Expected score is 71 for player 1 (yellow, X) to win in (100-71) = 29 moves
+        board = [
+            [0, 0, 0, 0, 0, 0, 0],  #
+            [0, 0, 0, 1, 0, 0, 0],  #
+            [0, 1, 0, 2, 0, 0, 0],  #
+            [0, 2, 0, 1, 0, 2, 0],  #
+            [0, 1, 0, 2, 0, 1, 0],  #
+            [0, 2, 0, 1, 0, 2, 0],  #
+        ]
+        expected_value = 71
+        val = openingbook.get_book_value(board)
+        assert val == expected_value
+        ```
+
+    Example:
+        Get the score for another  position with exactly 12 tokens in the 12-ply-dist database.
+        Player 1 (yellow, X) will lose in 12 moves.
+        ```python
+        import bitbully_databases as bbd
+
+        openingbook = bbd.BitBullyDatabases(db_name="12-ply-dist")
+
+        # Example position F: a known position in the 12-ply and 12-ply-dist opening books
+        # Expected score is -88 for player 1 (yellow, X) to lose in (100-88) = 12 moves
+        board = [
+            [0, 0, 0, 0, 0, 0, 0],  #
+            [0, 0, 0, 0, 0, 0, 0],  #
+            [0, 0, 1, 1, 0, 0, 0],  #
+            [0, 0, 2, 2, 0, 0, 0],  #
+            [0, 1, 2, 1, 0, 0, 0],  #
+            [0, 1, 1, 2, 0, 2, 2],
+        ]
+        expected_value = -88
+        val = openingbook.get_book_value(board)
+        assert val == expected_value
+        ```
     """
 
     def __init__(self, db_name: Literal["default", "8-ply", "12-ply", "12-ply-dist"] | None = None) -> None:
