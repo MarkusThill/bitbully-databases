@@ -95,6 +95,11 @@ cz bump
 git push origin tag x.x.x
 ```
 
+An alpha release can be created like this:
+```bash
+cz bump --prerelease alpha
+```
+
 ### Push commit and tag atomically
 
 For example, pushing the commit and tag for `v0.0.14` would be done like this:
