@@ -12,6 +12,7 @@ nav:
   - Getting Started: getting_started.md
   - API Reference:
       - bitbully_databases: python.md
+  - Changelog: CHANGELOG.md
 
 
 markdown_extensions:
