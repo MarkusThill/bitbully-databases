@@ -1,3 +1,10 @@
+## v0.0.2-a1 (2025-11-16)
+
+### Fix
+
+- moved changelog to docs
+- set the default database
+
 ## v0.0.2-a0 (2025-11-03)
 
 ### Fix

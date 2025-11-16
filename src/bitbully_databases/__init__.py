@@ -6,4 +6,4 @@ Homepage: https://github.com/MarkusThill/bitbully-databases
 from .bitbully_databases import BitBullyDatabases
 
 __all__: list[str] = ["BitBullyDatabases"]
-__version__: str = "0.0.2-a0"
+__version__: str = "0.0.2-a1"
