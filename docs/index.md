@@ -1,7 +1,7 @@
-📚 BitBully Databases
+# 📚 BitBully Databases
 
 <h1 align="center">
-<img src="https://github.com/MarkusThill/bitbully-databases/blob/master/bitbully-databases-logo.png" alt="bitbully-logo-full" width="400" >
+<img src="https://raw.githubusercontent.com/MarkusThill/bitbully-databases/master/bitbully-databases-logo.png" alt="bitbully-logo-full" width="400" >
 </h1><br>
 
 BitBully Databases provide precomputed **Connect-4 opening books** containing millions of evaluated positions and scores.

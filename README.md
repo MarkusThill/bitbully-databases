@@ -102,7 +102,7 @@ cz bump --prerelease alpha
 
 ### Push commit and tag atomically
 
-For example, pushing the commit and tag for `v0.0.14` would be done like this:
+For example, pushing the commit and tag for `v0.0.2-a1` would be done like this:
 ```bash
-git push --atomic origin master v0.0.14
+git push --atomic origin master v0.0.2-a1
 ```
