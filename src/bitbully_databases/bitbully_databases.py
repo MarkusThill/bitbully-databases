@@ -88,6 +88,9 @@ class BitBullyDatabases:
         val = openingbook.get_book_value(board)
         assert val == expected_value
         ```
+
+    For further examples, see
+    [`get_book_value()`][src.bitbully_databases.bitbully_databases.BitBullyDatabases.get_book_value].
     """
 
     def __init__(self, db_name: Literal["default", "8-ply", "12-ply", "12-ply-dist"] | None = None) -> None:
@@ -116,7 +119,7 @@ class BitBullyDatabases:
             )
 
     @staticmethod
-    def get_database_path(db_name: Literal["default", "8-ply", "12-ply", "12-ply-dist"]) -> str:
+    def get_database_path(db_name: Literal["default", "8-ply", "12-ply", "12-ply-dist"] = "default") -> str:
         """Return the packaged file path for a given database name.
 
         Args:
@@ -128,6 +131,15 @@ class BitBullyDatabases:
 
         Raises:
             ValueError: If `db_name` is not one of the supported values.
+
+        Example:
+            ```python
+            import bitbully_databases as bbd
+
+            db_path = bbd.BitBullyDatabases.get_database_path("12-ply-dist")
+            print(db_path)
+            # Outputs the absolute path to 'book_12ply_distances.dat'
+            ```
         """
         if db_name == "default":
             db_path = files("bitbully_databases").joinpath("assets/book_12ply_distances.dat")
@@ -165,6 +177,111 @@ class BitBullyDatabases:
 
         Raises:
             ValueError: If no database is loaded.
+
+        Example:
+            **Example 1 — 12-ply-dist (Player 1 wins in 29 moves):**
+            ```python
+            import bitbully_databases as bbd
+
+            # Example position: a known position in the 12-ply and 12-ply-dist opening books
+            # Expected score is 71 for player 1 (yellow, X) to win in (100-71) = 29 moves
+            board = [
+                [0, 0, 0, 0, 0, 0, 0],  #
+                [0, 0, 0, 1, 0, 0, 0],  #
+                [0, 1, 0, 2, 0, 0, 0],  #
+                [0, 2, 0, 1, 0, 2, 0],  #
+                [0, 1, 0, 2, 0, 1, 0],  #
+                [0, 2, 0, 1, 0, 2, 0],  #
+            ]
+            expected_value = 71
+            val = bbd.BitBullyDatabases(db_name="12-ply-dist").get_book_value(board)
+            assert val == expected_value
+            ```
+
+        Example:
+            **Example 2 — 8-ply (Basic win/loss database)**
+            ```python
+            import bitbully_databases as bbd
+
+            board = [
+                [0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 1, 0, 0, 0],
+                [0, 0, 0, 2, 0, 0, 0],
+                [0, 2, 0, 1, 0, 0, 0],
+                [0, 1, 0, 2, 0, 0, 0],
+                [0, 2, 0, 1, 0, 0, 0],
+            ]
+            val = bbd.BitBullyDatabases("8-ply").get_book_value(board)
+            print(val)  # 1 → Player 1 wins
+            ```
+
+        Example:
+            **Example 3 — 8-ply (Draw position)**
+            ```python
+            import bitbully_databases as bbd
+
+            board = [
+                [0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 2, 0, 0, 0],
+                [0, 0, 0, 1, 0, 0, 0],
+                [0, 0, 0, 2, 0, 0, 0],
+                [0, 0, 0, 1, 0, 2, 0],
+                [0, 0, 1, 2, 0, 1, 0],
+            ]
+            val = bbd.BitBullyDatabases("8-ply").get_book_value(board)
+            print(val)  # 0 → Draw
+            ```
+
+        Example:
+            **Example 4 — 12-ply (Draw position)**
+            ```python
+            import bitbully_databases as bbd
+
+            board = [
+                [0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 1, 1, 0, 0, 0],
+                [0, 0, 2, 2, 0, 0, 0],
+                [0, 0, 2, 1, 2, 0, 0],
+                [0, 1, 1, 2, 1, 2, 0],
+            ]
+            val = bbd.BitBullyDatabases("12-ply").get_book_value(board)
+            print(val)  # 0 → Draw
+            ```
+
+        Example:
+            **Example 5 — 12-ply-dist (Player 1 wins in 27 moves)**
+            ```python
+            import bitbully_databases as bbd
+
+            board = [
+                [0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0],
+                [0, 1, 0, 0, 0, 0, 0],
+                [0, 2, 2, 0, 1, 0, 0],
+                [0, 2, 1, 0, 2, 0, 0],
+                [1, 1, 2, 1, 2, 0, 0],
+            ]
+            val = bbd.BitBullyDatabases("12-ply-dist").get_book_value(board)
+            print(val)  # 73 → Player 1 wins in 27 moves
+            ```
+
+        Example:
+            **Example 6 — 12-ply-dist (Player 1 loses in 12 moves)**
+            ```python
+            import bitbully_databases as bbd
+
+            board = [
+                [0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 1, 1, 0, 0, 0],
+                [0, 0, 2, 2, 0, 0, 0],
+                [0, 1, 2, 1, 0, 0, 0],
+                [0, 1, 1, 2, 0, 2, 2],
+            ]
+            val = bbd.BitBullyDatabases("12-ply-dist").get_book_value(board)
+            print(val)  # -88 → Player 1 loses in 12 moves
+            ```
         """
         if self.book is None:
             raise ValueError("No database loaded; cannot get book value.")
@@ -178,6 +295,41 @@ class BitBullyDatabases:
 
         Raises:
             ValueError: If no database is loaded.
+
+        Example:
+            Retrieve the number of entries for each packaged database.
+            ```python
+            import bitbully_databases as bbd
+
+            # Default: loads the 12-ply-dist database automatically
+            db_default = bbd.BitBullyDatabases()
+            print(db_default.get_book_size())  # 4200899
+
+            # Load the 8-ply opening book
+            db8 = bbd.BitBullyDatabases("8-ply")
+            print(db8.get_book_size())  # 34515
+
+            # Load the 12-ply book without distances
+            db12 = bbd.BitBullyDatabases("12-ply")
+            print(db12.get_book_size())  # 1735945
+
+            # Load the 12-ply book with distances explicitly
+            db12d = bbd.BitBullyDatabases("12-ply-dist")
+            print(db12d.get_book_size())  # 4200899
+            ```
+
+        Example:
+            Calling this method before loading any database raises an error.
+            ```python
+            import bitbully_databases as bbd
+
+            db = bbd.BitBullyDatabases(None)  # Explicitly skip loading
+            try:
+                db.get_book_size()
+            except ValueError as e:
+                print(e)
+                # → "No database loaded; cannot determine book size."
+            ```
         """
         if self.book is None:
             raise ValueError("No database loaded; cannot determine book size.")
@@ -191,6 +343,41 @@ class BitBullyDatabases:
 
         Raises:
             ValueError: If no database is loaded.
+
+        Example:
+            Retrieve the approximate memory usage of each packaged database.
+            ```python
+            import bitbully_databases as bbd
+
+            # Default: loads the 12-ply-dist database automatically
+            db_default = bbd.BitBullyDatabases()
+            print(db_default.get_book_memory_size())
+
+            # Load the 8-ply opening book
+            db8 = bbd.BitBullyDatabases("8-ply")
+            print(db8.get_book_memory_size())
+
+            # Load the 12-ply book without distances
+            db12 = bbd.BitBullyDatabases("12-ply")
+            print(db12.get_book_memory_size())
+
+            # Load the 12-ply book with distances explicitly
+            db12d = bbd.BitBullyDatabases("12-ply-dist")
+            print(db12d.get_book_memory_size())
+            ```
+
+        Example:
+            Calling this method before loading any database raises an error.
+            ```python
+            import bitbully_databases as bbd
+
+            db = bbd.BitBullyDatabases(None)  # Explicitly skip loading
+            try:
+                db.get_book_memory_size()
+            except ValueError as e:
+                print(e)
+                # → "No database loaded; cannot determine book memory size."
+            ```
         """
         if self.book is None:
             raise ValueError("No database loaded; cannot determine book memory size.")
@@ -199,11 +386,59 @@ class BitBullyDatabases:
     def has_win_distances(self) -> bool:
         """Indicate whether the loaded database stores winning distances (scores) separately.
 
+        Some BitBully databases store only simple win/loss outcomes
+        (-1 = loss, 0 = draw, 1 = win), while others also include
+        **signed distance values** that indicate *how many moves remain*
+        until a win or loss.
+
+        This method lets you check whether the currently loaded database
+        contains those distance values.
+
         Returns:
-            bool: True if winning distances are stored in the database.
+            bool:
+                `True` if the loaded database includes distance information
+                (e.g., `"12-ply-dist"` or `"default"`),
+                `False` otherwise (e.g., `"8-ply"` or `"12-ply"`).
 
         Raises:
-            ValueError: If no database is loaded.
+            ValueError:
+                If no database is loaded.
+
+        Example:
+            Check whether the default (12-ply-dist) database contains win distances.
+            ```python
+            import bitbully_databases as bbd
+
+            db_default = bbd.BitBullyDatabases()  # default = "12-ply-dist"
+            print(db_default.has_win_distances())  # True
+            ```
+
+        Example:
+            Compare different databases.
+            ```python
+            import bitbully_databases as bbd
+
+            db8 = bbd.BitBullyDatabases("8-ply")
+            db12 = bbd.BitBullyDatabases("12-ply")
+            db12d = bbd.BitBullyDatabases("12-ply-dist")
+
+            print(db8.has_win_distances())  # False
+            print(db12.has_win_distances())  # False
+            print(db12d.has_win_distances())  # True
+            ```
+
+        Example:
+            Calling this method before loading any database raises an error.
+            ```python
+            import bitbully_databases as bbd
+
+            db = bbd.BitBullyDatabases(None)  # explicitly skip loading
+            try:
+                db.has_win_distances()
+            except ValueError as e:
+                print(e)
+                # → "No database loaded; cannot determine if it has win distances."
+            ```
         """
         if self.book is None:
             raise ValueError("No database loaded; cannot determine if it has win distances.")
