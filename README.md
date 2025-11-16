@@ -2,7 +2,7 @@
 Opening Databases for the Board Game Connect-4.
 
 <h1 align="center">
-<img src="https://github.com/MarkusThill/bitbully-databases/blob/master/bitbully-databases-logo.png" alt="bitbully-logo-full" width="400" >
+<img src="https://raw.githubusercontent.com/MarkusThill/bitbully-databases/master/bitbully-databases-logo.png" alt="bitbully-logo-full" width="400" >
 </h1><br>
 
 **BitBully Databases** is a companion library to [BitBully](https://github.com/MarkusThill/BitBully) that provides precomputed **Connect-4 opening books** with millions of evaluated positions.
