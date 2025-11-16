@@ -90,7 +90,7 @@ print(val)  # → 0 (draw)
 
 ---
 
-### 🏆 12-Ply-Dist Database — Win/Loss With Distance Values
+### 12-Ply-Dist Database — Win/Loss With Distance Values
 ```python
 board = [
     [0,0,0,0,0,0,0],
